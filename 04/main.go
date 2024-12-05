@@ -80,6 +80,50 @@ func readWordAtPosition(lines []string, position Vector) int {
 	return matches
 }
 
+func checkCornersAroundPosition(lines []string, position Vector) bool {
+	var corners []byte
+	directions := [4]Vector{
+		{-1, -1},
+		{1, 1},
+		{-1, 1},
+		{1, -1},
+	}
+
+	for _, direction := range directions {
+		corner, err := at(lines, move(position, direction))
+
+		if err != nil {
+			return false
+		}
+
+		if corner != 'M' && corner != 'S' {
+			return false
+		}
+
+		corners = append(corners, corner)
+	}
+
+	if corners[0] == corners[1] || corners[2] == corners[3] {
+		return false
+	}
+
+	return true
+}
+
+func readXMasAtPosition(lines []string, position Vector) bool {
+	letter, err := at(lines, position)
+
+	if err != nil {
+		return false
+	}
+
+	if letter != 'A' {
+		return false
+	}
+
+	return checkCornersAroundPosition(lines, position)
+}
+
 func main() {
 	input, err := os.ReadFile("./input.txt")
 	check(err)
@@ -91,7 +135,9 @@ func main() {
 		for col := range line {
 			position := Vector{row, col}
 
-			matches += readWordAtPosition(lines, position)
+			if readXMasAtPosition(lines, position) {
+				matches += 1
+			}
 		}
 	}
 

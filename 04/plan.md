@@ -29,3 +29,27 @@ So solution looks like:
 6. For each direction, check if there's an XMAS in that direction
 7. If so, add to the list
 
+### Part two
+
+This is an easier problem :P
+
+Only need to check opposite corner combinations.
+They could be:
+- Top left, bottom right
+- Top right, bottom left
+
+```
+M S S M
+ A   A
+M S S M
+```
+
+All X-MAS's are centered on the A, so only need to check the A's.
+
+Solution:
+1. Read in the file, split into 2d array, iterate all the chars
+2. If the char is not an A, continue
+3. If the char is an A, check two opposite corners for one M and one S
+4. Check the other two opposite corners for one M and one S
+5. If there are both, then it's an X-MAS. Add 1 to the sum
+
